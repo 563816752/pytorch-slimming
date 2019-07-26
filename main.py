@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.autograd import Variable
-
+import numpy as np
 from vgg import vgg
 import shutil
 
@@ -117,7 +117,8 @@ def train(epoch):
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.1f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.data[0]))
+                100. * batch_idx / (1+len(train_loader)), 
+                loss.data.item()))
 
 def test():
     model.eval()
@@ -159,3 +160,4 @@ for epoch in range(args.start_epoch, args.epochs):
         'best_prec1': best_prec1,
         'optimizer': optimizer.state_dict(),
     }, is_best)
+
